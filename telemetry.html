@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MMX — LinkedIn Telemetry Post</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .hero.slim { padding: 2rem 1.25rem 1rem; }
+  .hero.slim h1 { font-size: 2rem; }
+  .post {
+    white-space: pre-wrap;
+    font-family: inherit;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    background: rgba(7, 11, 22, 0.6);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin: 0 0 1rem;
+  }
+  .btnrow { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  button {
+    background: var(--gold);
+    color: #1a1206;
+    border: none;
+    border-radius: 10px;
+    padding: 0.7rem 1.4rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  button.ghost {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+  }
+  .copied {
+    display: none;
+    color: var(--green);
+    margin-top: 0.75rem;
+    font-weight: 600;
+  }
+  .copied.show { display: block; }
+</style>
+</head>
+<body>
+<header class="hero slim">
+  <div class="kicker">MMX telemetry → LinkedIn</div>
+  <h1>Post <span>generator</span></h1>
+  <p class="sub">Fresh Horizons data, formatted for LinkedIn. You review — you click Post.</p>
+</header>
+
+<main>
+  <section class="card">
+    <div class="card-kicker">Generated post</div>
+    <pre class="post" id="post">Fetching the latest reading…</pre>
+    <div class="btnrow">
+      <button id="copyBtn" type="button">Copy post</button>
+      <button id="regenBtn" type="button" class="ghost">Regenerate</button>
+    </div>
+    <div class="copied" id="copiedMsg">Copied — paste it into LinkedIn.</div>
+    <p class="feed-note" id="dataAge"></p>
+  </section>
+</main>
+
+<footer>
+  <p><a href="index.html">← Back to the live tracker</a></p>
+  <p>Built by MikeGyver Studio · Sharing is Caring · Data: <a href="https://ssd.jpl.nasa.gov/horizons/">NASA/JPL Horizons</a></p>
+</footer>
+
+
+<script src="telemetry.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MMX — Live Tracker</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="hero">
+  <div class="kicker">JAXA · H3 Flight 10 · Live via JPL Horizons</div>
+  <h1>MMX <span>live tracker</span></h1>
+  <p class="sub">Martian Moons eXploration — cruising to Mars, updated every 30 minutes</p>
+  <div class="tplus">
+    <div class="tplus-label">Mission elapsed time</div>
+    <div class="tplus-time" id="tplus-time">T+ --</div>
+    <div class="tplus-sub">Liftoff Oct 19, 2026 · 2:41 PM CDT</div>
+  </div>
+</header>
+
+<main>
+  <section class="stats">
+    <div class="stat">
+      <div class="stat-label">Distance from Earth</div>
+      <div class="stat-value" id="stat-dist">—</div>
+      <div class="stat-sub" id="stat-dist-sub">waiting for first poll…</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Range rate</div>
+      <div class="stat-value" id="stat-rate">—</div>
+      <div class="stat-sub" id="stat-rate-sub">receding</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">One-way light time</div>
+      <div class="stat-value" id="stat-light">—</div>
+      <div class="stat-sub">radio signal travel time</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Next milestone</div>
+      <div class="stat-value small" id="stat-next-name">Mars orbit insertion</div>
+      <div class="stat-sub" id="stat-next-count">—</div>
+    </div>
+  </section>
+
+  <section class="feed">
+    <h2>Horizons feed log <span class="feed-status" id="feed-status"></span></h2>
+    <ol id="feed-list"></ol>
+    <p class="feed-note">Trajectory data from NASA/JPL Horizons (spacecraft -239). Log kept on this device.</p>
+  </section>
+</main>
+
+<footer>
+  <p><a href="telemetry.html">Generate a LinkedIn post from this data →</a></p>
+  <p>Built by MikeGyver Studio · Sharing is Caring · Data: <a href="https://ssd.jpl.nasa.gov/horizons/">NASA/JPL Horizons</a></p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

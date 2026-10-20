@@ -1,0 +1,12 @@
+{
+  "target": "MMX (-239)",
+  "epoch_utc": "2026-Oct-20 00:00",
+  "range_au": 0.00043606941353,
+  "range_km": 65235,
+  "range_mi": 40535,
+  "range_rate_kms": 4.5661,
+  "range_rate_mph": 10214,
+  "light_delay_s": 0.2,
+  "polled_at": "2026-10-20T12:28:36.653Z",
+  "source": "NASA/JPL Horizons via GitHub Actions"
+}
