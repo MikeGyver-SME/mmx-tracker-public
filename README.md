@@ -36,20 +36,20 @@ Actions free.
    ```
    git init
    git add .
-   git commit -m "MMX tracker — public GitHub edition v1.0.0"
+   git commit -m "MMX tracker — public GitHub edition v1.0.1"
    git branch -M main
-   git remote add origin https://github.com/YOUR-USERNAME/mmx-tracker-public.git
+   git remote add origin https://github.com/MikeGyver-SME/mmx-tracker-public.git
    git push -u origin main
    ```
 
-   (Replace `YOUR-USERNAME` with your GitHub username. Using GitHub Desktop
+   (Using GitHub Desktop
    or your usual push script works too — the important part is that **all**
    files land in the repo, including the `.github` folder and `.nojekyll`.)
 3. Turn on Pages: in the repo, click **Settings → Pages**.
    - Under "Build and deployment", set **Source: Deploy from a branch**.
    - Set the branch to **main** and the folder to **/ (root)**, then **Save**.
    - After a minute or two, the Pages banner shows your live URL:
-     `https://YOUR-USERNAME.github.io/mmx-tracker-public/`
+     `https://mikegyver-sme.github.io/mmx-tracker-public/`
 4. Kick off the first data refresh: click the **Actions** tab →
    **Update MMX telemetry** → **Run workflow**. (The packaged
    `data/latest.json` already contains a live reading, so the site works

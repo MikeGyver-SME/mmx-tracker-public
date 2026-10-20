@@ -104,6 +104,14 @@ async function refresh() {
         stamp: stamp,
         t: d.toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }),
         dist: fmtInt(data.range_mi) + " mi · " + data.range_rate_kms.toFixed(2) + " km/s",
+        // Numeric fields (for console.table analysis, Roman-feed style):
+        epoch_utc: data.epoch_utc,
+        range_km: data.range_km,
+        range_mi: data.range_mi,
+        range_au: data.range_au,
+        range_rate_kms: data.range_rate_kms,
+        range_rate_mph: data.range_rate_mph,
+        light_delay_s: data.light_delay_s,
       });
       saveFeed(feed);
       renderFeed(feed);
