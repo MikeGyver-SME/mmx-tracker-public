@@ -161,6 +161,16 @@ main {
 .feed-time { color: var(--muted); flex: 0 0 auto; }
 .feed-dist { text-align: right; }
 
+.stale-badge {
+  background: #4a3205;
+  border: 1px solid #d9a406;
+  color: #ffd75e;
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  margin: 0 0 1rem;
+}
+
 .feed-note {
   color: var(--muted);
   font-size: 0.8rem;

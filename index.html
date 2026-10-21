@@ -10,7 +10,7 @@
 <header class="hero">
   <div class="kicker">JAXA · H3 Flight 10 · Live via JPL Horizons</div>
   <h1>MMX <span>live tracker</span></h1>
-  <p class="sub">Martian Moons eXploration — cruising to Mars, updated every 30 minutes</p>
+  <p class="sub">Martian Moons eXploration — cruising to Mars, updated every 15 minutes</p>
   <div class="tplus">
     <div class="tplus-label">Mission elapsed time</div>
     <div class="tplus-time" id="tplus-time">T+ --</div>
@@ -42,6 +42,8 @@
     </div>
   </section>
 
+  <div class="stale-badge" id="stale-badge" hidden></div>
+
   <section class="feed">
     <h2>Horizons feed log <span class="feed-status" id="feed-status"></span></h2>
     <ol id="feed-list"></ol>
@@ -54,6 +56,7 @@
   <p>Built by MikeGyver Studio · Sharing is Caring · Data: <a href="https://ssd.jpl.nasa.gov/horizons/">NASA/JPL Horizons</a></p>
 </footer>
 
+<script src="config.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

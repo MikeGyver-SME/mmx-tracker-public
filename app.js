@@ -1,12 +1,12 @@
 "use strict";
 
-/* MMX live tracker frontend — PUBLIC GitHub edition.
- * Reads data/latest.json (same-origin static file, refreshed by a GitHub
- * Actions workflow every ~30 minutes). The T+ clock runs locally every
- * second; the data file is re-read every 5 minutes.
+/* MMX live tracker frontend.
+ * Reads the latest Horizons poll from the Cloudflare Worker and renders it.
+ * The T+ clock runs locally every second; worker data refreshes every 60 s.
  */
 
-const DATA_URL = "data/latest.json";
+// Worker URL comes from config.js (set it once there after deploying).
+// >>> If the stats below say "set the worker URL", edit web/config.js <<<
 
 const LAUNCH_UTC = Date.UTC(2026, 9, 19, 19, 41, 3); // 2:41 PM CDT Oct 19 2026
 const NEXT_MILESTONE = {
@@ -71,19 +71,38 @@ function renderFeed(feed) {
 
 async function refresh() {
   const distEl = document.getElementById("stat-dist");
+  if (
+    typeof MMX_WORKER_URL === "undefined" ||
+    MMX_WORKER_URL.indexOf("YOUR_SUBDOMAIN") !== -1
+  ) {
+    document.getElementById("stat-dist-sub").textContent =
+      "set the worker URL in web/config.js, then reload";
+    return;
+  }
   try {
-    const res = await fetch(DATA_URL + "?v=" + Date.now(), { cache: "no-store" });
-    if (!res.ok) throw new Error("data HTTP " + res.status);
+    const res = await fetch(MMX_WORKER_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error("worker HTTP " + res.status);
     const data = await res.json();
-    if (!data.range_km) {
+    if (data.status === "warming_up" || !data.range_km) {
       document.getElementById("stat-dist-sub").textContent =
-        "first Horizons update lands within ~30 minutes of deploy";
+        "worker warming up — first Horizons poll lands within ~15 min of deploy";
       return;
     }
 
     distEl.textContent = fmtInt(data.range_mi) + " mi";
     document.getElementById("stat-dist-sub").textContent =
       fmtInt(data.range_km) + " km · " + data.range_au.toFixed(6) + " AU";
+
+    // Stale-data badge: driven by the worker's epoch drift guard (v1.3.1+).
+    // Readings from older workers have no epoch_ok field — treat as OK.
+    const staleEl = document.getElementById("stale-badge");
+    if (data.epoch_ok === false) {
+      staleEl.textContent =
+        "⚠ Stale data — " + (data.warning || "the Horizons epoch is behind real time");
+      staleEl.hidden = false;
+    } else {
+      staleEl.hidden = true;
+    }
 
     const rateEl = document.getElementById("stat-rate");
     rateEl.textContent = data.range_rate_kms.toFixed(2) + " km/s";
@@ -126,4 +145,4 @@ renderFeed(loadFeed());
 tickClock();
 setInterval(tickClock, 1000);
 refresh();
-setInterval(refresh, 300000);
+setInterval(refresh, 60000);

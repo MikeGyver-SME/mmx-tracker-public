@@ -1,24 +1,12 @@
 "use strict";
 
-/* MMX LinkedIn telemetry post generator — PUBLIC GitHub edition.
- * Reads data/latest.json (same-origin, refreshed by GitHub Actions) and
- * formats a LinkedIn-ready post. Plain text, no Markdown, bare URLs on
- * own lines.
+/* MMX LinkedIn telemetry post generator.
+ * Pulls the latest Horizons reading from the tracker worker and formats
+ * a LinkedIn-ready post. Plain text, no Markdown, bare URLs on own lines.
  */
 
-const DATA_URL = "data/latest.json";
-
 const LAUNCH_UTC = Date.UTC(2026, 9, 19, 19, 41, 3); // 2:41 PM CDT Oct 19 2026
-
-/* The "Tracked live:" link is this site's own address, derived from where
- * the page is hosted — on GitHub Pages it automatically becomes your
- * public tracker URL. To hard-code a different link instead, replace the
- * line below with:  const TRACKER_URL = "https://your-link/";            */
-const TRACKER_URL =
-  location.origin +
-  location.pathname.replace(/telemetry\.html$/, "").replace(/\/$/, "") +
-  "/";
-
+const TRACKER_URL = "https://www.webhtml5.info/mmx-tracker/";
 const NEXT_MILESTONE = {
   name: "Mars orbit insertion",
   date: Date.UTC(2027, 7, 1), // ~August 2027 (month-level JAXA estimate)
@@ -27,6 +15,13 @@ const NEXT_MILESTONE = {
 
 function fmtInt(n) {
   return Math.round(n).toLocaleString("en-US");
+}
+
+function workerReady() {
+  return (
+    typeof MMX_WORKER_URL !== "undefined" &&
+    MMX_WORKER_URL.indexOf("YOUR_SUBDOMAIN") === -1
+  );
 }
 
 function buildPost(d) {
@@ -80,13 +75,20 @@ async function generate() {
   const ageEl = document.getElementById("dataAge");
   document.getElementById("copiedMsg").classList.remove("show");
 
+  if (!workerReady()) {
+    postEl.textContent =
+      "Set MMX_WORKER_URL in config.js first (see README-deploy.txt), then regenerate.";
+    ageEl.textContent = "";
+    return;
+  }
+
   try {
-    const res = await fetch(DATA_URL + "?v=" + Date.now(), { cache: "no-store" });
-    if (!res.ok) throw new Error("data HTTP " + res.status);
+    const res = await fetch(MMX_WORKER_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error("worker HTTP " + res.status);
     const data = await res.json();
-    if (!data.range_km) {
+    if (data.status === "warming_up" || !data.range_km) {
       postEl.textContent =
-        "No Horizons reading yet — the first update lands within ~30 minutes of deploy. Regenerate then.";
+        "The worker is still warming up — first Horizons poll lands within ~15 minutes of deploy. Regenerate then.";
       ageEl.textContent = "";
       return;
     }
@@ -102,7 +104,7 @@ async function generate() {
       });
   } catch (e) {
     postEl.textContent =
-      "Couldn't load data/latest.json (" + e.message + "). If you just deployed, give the first Actions run a few minutes and regenerate.";
+      "Couldn't reach the worker (" + e.message + "). Check the worker URL in config.js and try again.";
     ageEl.textContent = "";
   }
 }
